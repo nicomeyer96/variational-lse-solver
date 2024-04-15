@@ -24,7 +24,7 @@ class LocalOverlap(LocalBase):
     """
     This class allows for evaluation of the local loss term via the Hadamard-overlap test.
 
-    WORK IN PROGRESS
+    NOT IMPLEMENTED (as undesirable properties compared to Hadamard test)
     """
 
     def __init__(
@@ -47,8 +47,8 @@ class LocalOverlap(LocalBase):
 
     @override
     def cost(self, weights: torch.tensor) -> torch.tensor:
-        raise NotImplementedError('This method is currently under development. '
-                                  'Please resort to the `direct` or `hadamard` evalaution method.')
+        raise NotImplementedError('This method is not implemented. '
+                                  'Please resort to the `direct` or `hadamard` evaluation method.')
 
     def qnode_overlap_local(self) -> Callable:
         dev = qml.device('default.qubit', wires=2 * self.data_qubits + 1)

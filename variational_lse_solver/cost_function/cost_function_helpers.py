@@ -26,7 +26,8 @@ from .. import gates
 
 # noinspection PyTypeChecker
 def controlled_system(encoded_system: np.ndarray, system: list, mode: CostFunctionMode,
-                      control_qubit: int, data_qubits_map: dict, adjoint: bool = False):
+                      control_qubit: int | list[int], data_qubits_map: dict, adjoint: bool = False,
+                      control_values: bool | list[bool] = None):
     """
     Realizes the controlled application of A_m, which are encoded in the following ways:
         - `pauli`-mode: one-hot values [num_qubits, 3] indicating which Pauli-term to apply to each qubit (all zero for `I`).
@@ -39,26 +40,29 @@ def controlled_system(encoded_system: np.ndarray, system: list, mode: CostFuncti
     :param control_qubit: Index of control qubits (0 by default).
     :param data_qubits_map: Index of data qubits (1, ..., num_qubits by default).
     :param adjoint: Whether to use the adjoint A_m^t.
+    :param control_values: The values the control wire(s) should take (1 by default)
     """
+    if control_values is None:
+        control_values = 1
 
     match mode:
         case CostFunctionMode.PAULI:
             assert len(data_qubits_map) == encoded_system.shape[0]
             # controlled version of A_m (as only Paulis we can just control them individually), self-adjoint
             for index, qubit_key in enumerate(data_qubits_map):
-                qml.ctrl(gates.param_pauli_x, control_qubit)(-encoded_system[index, 0], wires=data_qubits_map[qubit_key])
-                qml.ctrl(gates.param_pauli_y, control_qubit)(-encoded_system[index, 1], wires=data_qubits_map[qubit_key])
-                qml.ctrl(gates.param_pauli_z, control_qubit)(-encoded_system[index, 2], wires=data_qubits_map[qubit_key])
+                qml.ctrl(gates.param_pauli_x, control_qubit, control_values)(-encoded_system[index, 0], wires=data_qubits_map[qubit_key])
+                qml.ctrl(gates.param_pauli_y, control_qubit, control_values)(-encoded_system[index, 1], wires=data_qubits_map[qubit_key])
+                qml.ctrl(gates.param_pauli_z, control_qubit, control_values)(-encoded_system[index, 2], wires=data_qubits_map[qubit_key])
         case CostFunctionMode.UNITARY:
             if adjoint:
-                qml.ctrl(qml.adjoint(qml.QubitUnitary), control_qubit)(encoded_system, wires=list(data_qubits_map.values()))
+                qml.ctrl(qml.adjoint(qml.QubitUnitary), control_qubit, control_values)(encoded_system, wires=list(data_qubits_map.values()))
             else:
-                qml.ctrl(qml.QubitUnitary, control_qubit)(encoded_system, wires=list(data_qubits_map.values()))
+                qml.ctrl(qml.QubitUnitary, control_qubit, control_values)(encoded_system, wires=list(data_qubits_map.values()))
         case CostFunctionMode.CIRCUIT:
             if adjoint:
-                qml.ctrl(qml.adjoint(qml.map_wires(system[encoded_system[0]], data_qubits_map)), control_qubit)()
+                qml.ctrl(qml.adjoint(qml.map_wires(system[encoded_system[0]], data_qubits_map)), control_qubit, control_values)()
             else:
-                qml.ctrl(qml.map_wires(system[encoded_system[0]], data_qubits_map), control_qubit)()
+                qml.ctrl(qml.map_wires(system[encoded_system[0]], data_qubits_map), control_qubit, control_values)()
         case CostFunctionMode.MATRIX:
             raise RuntimeError('This function should not be called for the MATRIX mode.')
         case _:

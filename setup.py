@@ -5,13 +5,15 @@ with open('README.md', 'r') as ff:
 
 setuptools.setup(
     name='variational-lse-solver',
-    version='0.1',
+    version='1.0',
     description='Comprehensive Library of Variational LSE Solvers',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Fraunhofer IIS',
+    author_email='nico.meyer@iis.fraunhofer.de',
     license='Apache License 2.0',
     platforms='any',
+    url='https://github.com/nicomeyer96/variational-lse-solver',
     classifiers=[
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',

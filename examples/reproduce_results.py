@@ -24,13 +24,15 @@ Y_ = np.array([[0.0, -1.j], [1.j, 0.0]])
 Z_ = np.array([[1.0, 0.0], [0.0, -1.0]])
 
 
-def reproduce_bravo_prieto(mode: str = 'pauli', local: bool = False, steps: int = 50) -> None:
+def reproduce_bravo_prieto(mode: str = 'pauli', method: str = 'hadamard',
+                           local: bool = False, steps: int = 50) -> None:
     """
     This code reproduces an experiment to variationally solve a LSE, which was originally proposed in
     C. Bravo-Prieto et al., "Variational Quantum Linear Solver: A Hybrid Algorithm for Linear Systems", arXiv:1909.05820v2 (2020).
     The implementation uses the `variational-lse-solve` library.
 
     :param mode: decomposition mode of system (default: pauli)
+    :param method: loss evaluation method (default: hadamard)
     :param local: use global or local cost function (default: global, i.e. local=False)
     :param steps: number of steps to train for (default: 50)
     """
@@ -62,7 +64,7 @@ def reproduce_bravo_prieto(mode: str = 'pauli', local: bool = False, steps: int 
         a,  # system decomposition
         b_fn,  # right side, alternatively use `b_fn`
         coeffs=[1.0, 0.2, 0.2],  # coefficients for `a`
-        method='hadamard',  # computation method
+        method=method,  # computation method
         local=local,  # global or local loss
         steps=steps, lr=0.1,  # set number of steps and learning rate
         data_qubits=3  # only required for `circuit` mode
@@ -83,13 +85,17 @@ def reproduce_bravo_prieto(mode: str = 'pauli', local: bool = False, steps: int 
     print('\nClassical:\n|', end='')
     for s in normalized_classical_solution:
         print(f' {s:.4f} |', end='')
+    print()
 
 
 def parse():
     parser = argparse.ArgumentParser()
     mode_choices = ['pauli', 'unitary', 'circuit']
+    method_choices = ['hadamard', 'overlap', 'coherent']
     parser.add_argument('--mode', type=str, choices=mode_choices, default='pauli',
                         help='Which decomposition mode to use (defaults to `pauli`).')
+    parser.add_argument('--method', type=str, choices=method_choices, default='hadamard',
+                        help='Which loss evaluation method to use (defaults to `hadamard`).')
     parser.add_argument('--local', action='store_true',
                         help='Use local cost function.')
     parser.add_argument('--steps', type=int, default=100,
@@ -101,4 +107,4 @@ def parse():
 if __name__ == "__main__":
 
     _args = parse()
-    reproduce_bravo_prieto(mode=_args.mode, local=_args.local, steps=_args.steps)
+    reproduce_bravo_prieto(mode=_args.mode, method=_args.method, local=_args.local, steps=_args.steps)

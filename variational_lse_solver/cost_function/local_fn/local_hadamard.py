@@ -117,7 +117,7 @@ class LocalHadamard(LocalBase):
         assert delta_mn.shape[0] == self.data_qubits * ((len(self.coeffs) ** 2 + len(self.coeffs)) // 2)
 
         # equation (18) of https://quantum-journal.org/papers/q-2023-11-22-1188/
-        # Note: using symmetries: delta_mn = conjugate(delta_nm^{j}) => c_m c_n^t delta_mn + c_m^t c_n delta_nm = 2 Re(c_m c_n^t delta_mn);
+        # Note: using symmetries: delta_mn^(j) = conjugate(delta_nm^(j)) => c_m c_n^t delta_mn^(j) + c_m^t c_n delta_nm^(j) = 2 Re(c_m c_n^t delta_mn^(j));
         # IMPORTANT: One must avoid to call `abs(...)` on loss_raw, as done in https://pennylane.ai/qml/demos/tutorial_vqls/.
         #            This potentially introduces unwanted symmetries to the loss landscape and leads to faulty convergence.
         loss_raw = torch.div(torch.sum(torch.real(torch.mul(delta_mn, self.batched_encoded_system['batched_factors']))), self.data_qubits)
@@ -175,7 +175,7 @@ class LocalHadamard(LocalBase):
             # noinspection PyTypeChecker
             qml.ctrl(qml.map_wires(self.right_side_fn, self.data_qubits_map), self.ancilla_qubit)()
 
-            # apply controlled version of encoded system A_m^t
+            # apply controlled version of encoded system A_n^t
             controlled_system(encoded_system_n, self.system, self.mode, self.ancilla_qubit, self.data_qubits_map, adjoint=True)
 
             # hadamard gate on ancilla
@@ -211,7 +211,7 @@ class LocalHadamard(LocalBase):
         batched_encoded_system_m = self.encoded_system[m_indices]
         batched_encoded_system_n = self.encoded_system[n_indices]
 
-        # Repeat for num_qubits to allow local evalaution
+        # Repeat for num_qubits to allow local evaluation
         batched_factors = np.repeat(batched_factors, self.data_qubits, axis=0)
         batched_encoded_system_m = np.repeat(batched_encoded_system_m, self.data_qubits, axis=0)
         batched_encoded_system_n = np.repeat(batched_encoded_system_n, self.data_qubits, axis=0)

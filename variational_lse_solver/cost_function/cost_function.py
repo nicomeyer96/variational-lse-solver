@@ -43,14 +43,14 @@ class CostFunction:
             imaginary: bool
     ):
         """
-        Evalaution of normalized loss.
+        Evaluation of normalized loss.
 
         :param system: System matrix given as either Pauli strings, unitaries, or circuits, or full matrix.
         :param coeffs: Corresponding coefficients.
         :param right_side: Right side of the LSE.
         :param ansatz: The variational quantum circuit.
         :param mode: In which mode to run (i.e. in which form `system` is provided).
-        :param method: Which method to use for evalaution of the loss term.
+        :param method: Which method to use for evaluation of the loss term.
         :param data_qubits: Number of qubits in the VQC.
         :param imaginary: Whether to evaluate imaginary terms.
         """
@@ -89,14 +89,13 @@ class CostFunction:
         :param weights: Weights for the VQC ansatz.
         :return: Normalized loss value (with grad_fn).
         """
-        if CostFunctionMethod.COHERENT != self.method:  # The coherent method inherently computes the norm
-            norm = self.norm_fn.cost(weights)
-        loss_raw = self.loss_fn.cost(weights)
         if CostFunctionMethod.COHERENT == self.method:  # The coherent method inherently normalizes the loss
-            return loss_raw
+            return torch.abs(torch.sub(1.0, self.loss_fn.cost(weights)))
+        norm = self.norm_fn.cost(weights)
+        loss_raw = self.loss_fn.cost(weights)
         # noinspection PyUnboundLocalVariable
         loss = torch.abs(torch.sub(1.0, torch.div(loss_raw, norm)))
-        # if using local cost function, divide by 1/2 to be consistent with `direct` definition
+        # if using local cost function, divide by 2 to be consistent with `direct` definition
         if CostFunctionLoss.LOCAL == self.loss and CostFunctionMethod.DIRECT != self.method:
             loss = torch.div(loss, 2.0)
         return loss
@@ -153,7 +152,11 @@ class CostFunction:
                                   data_qubits: int, mode: CostFunctionMode, imaginary: bool):
         """ Set up coherent computation of global loss. """
         assert mode != CostFunctionMode.MATRIX
-        return GlobalCoherent(system, coeffs, right_side, ansatz, data_qubits, mode, imaginary)
+        assert np.all(np.isreal(coeffs)), 'For the `coherent` mode all coefficients have to be real.'
+        assert np.all(np.array(coeffs) >= 0.0), 'For the `coherent` mode all coefficients have to be non-negative.'
+        # prepare coefficients as described in https://pennylane.ai/qml/demos/tutorial_coherent_vqls/
+        coeffs_ = list(np.sqrt(np.array(coeffs) / np.sum(coeffs))) #+ [0.0] * (2 ** int(np.ceil(np.log2(len(coeffs)))) - len(coeffs))
+        return GlobalCoherent(system, coeffs_, right_side, ansatz, data_qubits, mode, imaginary)
 
     @staticmethod
     def init_loss_direct_local(system: np.ndarray, coeffs: None,

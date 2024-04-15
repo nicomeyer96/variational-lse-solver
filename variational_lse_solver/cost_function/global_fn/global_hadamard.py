@@ -110,6 +110,8 @@ class GlobalHadamard(GlobalBase):
         gamma_m = calculate_gamma(weights)
         assert gamma_m.shape[0] == len(self.system)
 
+        # print(torch.outer(gamma_m, torch.conj(gamma_m)))
+
         # equation (16) of https://quantum-journal.org/papers/q-2023-11-22-1188/
         # Note: We extend equation (17) to gamma_mn = gamma_m * conjugate(gamma_n), with gamma_m = <0|U^tA_mV|0>,
         #       as it holds conjugate(gamma_m) = conjugate(<0|U^tA_mV|0>) = <0|V^tA_m^tU|0>.
