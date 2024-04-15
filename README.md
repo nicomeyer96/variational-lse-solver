@@ -71,7 +71,7 @@ The `variational-lse-solver` library is mostly based on the techniques introduce
 The concept of using dynamically growing circuits is inspired by
 ["Variational quantum linear solver with a dynamic ansatz", H. Patil et al., Phys. Rev. A 105, 012423 (2022)](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.105.012423)
 
-There are some alternative implementations of subroutines provided by `varaitional-lse-solver` in the PennyLane Demos:
+There are some alternative implementations of subroutines provided by `variational-lse-solver` in the PennyLane Demos:
 - https://pennylane.ai/qml/demos/tutorial_vqls/
 - https://pennylane.ai/qml/demos/tutorial_coherent_vqls/
 
