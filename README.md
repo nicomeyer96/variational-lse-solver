@@ -10,7 +10,7 @@
 </table>
 
 [![Static Badge](https://img.shields.io/badge/arXiv-0000.00000-red)
-](https://arxiv.org/search/quant-ph?searchtype=author&query=Meyer,+N)[![Static Badge](https://img.shields.io/badge/PyPI-pip_install_variational--lse--solver-blue)](https://pypi.org/project/pip/)
+](https://arxiv.org/search/quant-ph?searchtype=author&query=Meyer,+N)[![Static Badge](https://img.shields.io/badge/PyPI-pip_install_variational--lse--solver-blue)](https://pypi.org/project/variational-lse-solver/)
 
 This repo contains the code for the PennyLane-based `variational-lse-solver` library introduced in 
 "Comprehensive Library of Variational LSE Solvers", N. Meyer et al. (2024).
