@@ -47,11 +47,11 @@ Additionally, we provide to usage examples.
 To reproduce the results depicted in the paper, one can run
 
 ```
-python examples/reproduce_result.py --mode 'unitary' --method 'hadamard'
+python examples/reproduce_result.py --mode 'pauli' --method 'hadamard'
 ```
 Keep in mind, that the reported results were averaged over 100 random initializations. 
 In order to use the local cost function, just add the `--local` flag. 
-It is also possible to use the matrix decomposition modes `pauli` and `circuit`, and the loss evaluation methods `overlap` and `coherent`.
+It is also possible to use the matrix decomposition modes `unitary` and `circuit`, and the loss evaluation methods `overlap` and `coherent`.
 Running the script will print the solution found with the variational LSE solver, as well as the classically validated solution.
 
 #### Solve Random LSE
