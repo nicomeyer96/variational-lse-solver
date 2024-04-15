@@ -64,6 +64,7 @@ def test_for_random_system(size: int = 3, local: bool = False, threshold: float 
     print('\nClassical:\n|', end='')
     for s in normalized_classical_solution:
         print(f' {s:.4f} |', end='')
+    print()
 
 
 def parse():
