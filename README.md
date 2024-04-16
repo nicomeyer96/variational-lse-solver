@@ -88,7 +88,7 @@ If you use the `variational-lse-solve` library or results from the paper, please
 ```
 @article{meyer2024comprehensive,
   title={Comprehensive Library of Variational LSE Solvers},
-  author={Meyer, Nico and R"\ohn, Martin and Murauer, Jakob and Scherer, Daniel D. and Plinge, Axel and Mutschler, Christopher},
+  author={Meyer, Nico and R"\ohn, Martin and Murauer, Jakob and Plinge, Axel and Mutschler, Christopher and Scherer, Daniel D.},
   journal={arXiv:2404.09916},
   year={2024},
   doi={.../arXiv...}
