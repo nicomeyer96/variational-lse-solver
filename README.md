@@ -91,7 +91,7 @@ If you use the `variational-lse-solve` library or results from the paper, please
   author={Meyer, Nico and R"\ohn, Martin and Murauer, Jakob and Plinge, Axel and Mutschler, Christopher and Scherer, Daniel D.},
   journal={arXiv:2404.09916},
   year={2024},
-  doi={.../arXiv...}
+  doi={10.48550/arXiv.2404.09916}
 }
 ```
 
