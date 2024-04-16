@@ -13,7 +13,7 @@
 ](https://arxiv.org/abs/2404.09916)[![Static Badge](https://img.shields.io/badge/PyPI-pip_install_variational--lse--solver-blue)](https://pypi.org/project/variational-lse-solver/)
 
 This repo contains the code for the PennyLane-based `variational-lse-solver` library introduced in 
-["Comprehensive Library of Variational LSE Solvers", N. Meyer et al. (2024)](https://arxiv.org/abs/2404.09916).
+["Comprehensive Library of Variational LSE Solvers", N. Meyer et al., arXiv:2404.09916 (2024)](https://arxiv.org/abs/2404.09916).
 
 > Linear systems of equations can be found in various mathematical domains, as well as in the field of machine learning. By employing noisy intermediate-scale quantum devices, variational solvers promise to accelerate finding solutions for large systems. Although there is a wealth of theoretical research on these algorithms, only fragmentary implementations exist. To fill this gap, **we have developed the variational-lse-solver framework**, which **realizes existing approaches in literature**, and **introduces several enhancements**. The user-friendly interface is designed for researchers that work at the **abstraction level of identifying and developing end-to-end applications**.
 
